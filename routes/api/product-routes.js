@@ -102,7 +102,7 @@ router.put("/:id", (req, res) => {
                 ProductTag.bulkCreate(newProductTags),
             ]);
         })
-        .then((updatedProductTags) => res.json(updatedProductTags))
+        .then((updatedProductTags) => res.status(200).json(updatedProductTags))
         .catch((err) => {
             // console.log(err);
             res.status(400).json(err);
@@ -114,14 +114,15 @@ router.delete("/:id", async (req, res) => {
     try {
         await Product.destroy({ where: { id: req.params.id } });
 
-        await ProductTag.destroy(req.body, {
-            where: { product_id: req.params.id },
+        await ProductTag.destroy({
+            where: { product_id: req.params.id }
         });
 
         const productData = await Product.findAll({ include: [Category, Tag] });
 
         return res.status(200).json(productData);
     } catch (err) {
+        console.log(err);
         return res.status(500).json(err);
     }
 });

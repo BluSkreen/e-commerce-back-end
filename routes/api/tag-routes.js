@@ -60,8 +60,10 @@ router.put("/:id", async (req, res) => {
         if (!tagData) {
             return res.status(404).json({ message: "id not found!" });
         }
-        return res.status(200).json(tagData);
-    } catch (err) {}
+        return res.status(200).json({ message: "tag updated" });
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 });
 
 router.delete("/:id", async (req, res) => {
